@@ -1,90 +1,95 @@
-#include <iostream>
+#ifndef ADD_SMART_POINTER_CLASS_HEADER_H__
+#define ADD_SMART_POINTER_CLASS_HEADER_H__
 
-template<class T> class SmartPointer
+namespace MEK
 {
-public:
-	T* m_pObj;
-	unsigned* m_pCnt;
-
-	SmartPointer() :
-		m_pObj(NULL),
-		m_pCnt(NULL)
+	template<class T> class SmartPointer
 	{
-	}
+	public:
+		T* m_pObj;
+		unsigned* m_pCnt;
 
-	SmartPointer(T* pObj) :
-		m_pObj(pObj),
-		m_pCnt()
-	{
-		if (NULL == m_pCnt)
-			m_pCnt = new unsigned();
+		SmartPointer() :
+			m_pObj(NULL),
+			m_pCnt(NULL)
+		{}
 
-		*m_pCnt = 1;
-	}
-
-	SmartPointer(SmartPointer<T>& sPntr) :
-		m_pObj(sPntr.m_pObj),
-		m_pCnt(sPntr.m_pCnt)
-	{
-		if (NULL == m_pCnt)
-			m_pCnt = new unsigned();	
-		
-		(*m_pCnt)++;
-	}
-
-	virtual ~SmartPointer()
-	{
-		remove();
-	}
-
-	SmartPointer<T>& operator = (SmartPointer<T>& other)
-	{
-		if (this->m_pObj != other.m_pObj)
+		SmartPointer(T* pObj) :
+			m_pObj(pObj),
+			m_pCnt(NULL)
 		{
-			// remove association with previous object
-			remove();
-
-			// change association to match other
-			m_pObj = other.m_pObj;
-			m_pCnt = other.m_pCnt;
-			if (m_pCnt)
-				(*m_pCnt)++;		
+			if (m_pObj)
+			{
+				m_pCnt = new unsigned();
+				(*m_pCnt) = 1;
+			}
 		}
 
-		return *this;
-	}
-
-	T& operator * () { return *m_pObj; }
-
-	T* operator -> () { return m_pObj; }
-
-	void printPntrInfo()
-	{
-		if (NULL == m_pCnt)
-			std:: cout << "    Object pointer: " << m_pObj << ", count pointer: " << m_pCnt << std::endl;
-		else
-			std:: cout << "    Object pointer: " << m_pObj << ", count pointer: " << m_pCnt << ", number: " << *m_pCnt << std::endl;
-	}
-
-protected:
-	void remove()
-	{
-		// decrement counter since smart pointer is being deleted
-		if (NULL != m_pCnt)
+		SmartPointer(SmartPointer<T>& sPntr) :
+			m_pObj(sPntr.m_pObj),
+			m_pCnt(sPntr.m_pCnt)
 		{
-			if (0 < *m_pCnt)
-				(*m_pCnt)--;
-
-			if (*m_pCnt == 0)
+			if (m_pCnt)
 			{
-				// this is last instance of smart pointer....so clean up
-				delete m_pCnt;
+				(*m_pCnt)++;
+			}
+		}
 
-				
-				if (NULL != m_pObj)
-					delete m_pObj;
+		virtual ~SmartPointer()
+		{
+			clear();
+		}
+
+		SmartPointer<T>& operator = (SmartPointer<T>& other)
+		{
+			if (m_pObj != other.m_pObj)
+			{
+				// remove association with previous object
+				clear();
+
+				// change association to match other
+				m_pObj = other.m_pObj;
+				m_pCnt = other.m_pCnt;
+
+				if (m_pCnt)
+				{
+					(*m_pCnt)++;
+				}
 			}
 
+			return *this;
 		}
-	}
-};
+
+		// Overload to access object
+		T& operator * () { return *m_pObj; }
+		T* operator -> () { return m_pObj; }
+
+		// methods to addcess smart pointer info
+		char* getSmPntr() { return (char*) m_pObj; }
+		unsigned getSmCnt() { return (m_pCnt) ? *m_pCnt : 0; }
+
+		// clear or reset smart pointer
+		void clear ()
+		{
+			if (m_pCnt)
+			{
+				(*m_pCnt)--;
+
+				if (*m_pCnt == 0)
+				{
+					// this is last instance of smart pointer....so clean up
+					delete m_pCnt;
+					delete m_pObj;
+				}
+
+				// This indicates that smartpointer is not pointing to object
+				m_pCnt = NULL;
+				m_pObj = NULL;
+			}
+		}
+	};
+}
+
+
+
+#endif

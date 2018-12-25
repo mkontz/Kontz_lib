@@ -30,8 +30,10 @@ public:
 		return *this;
 	}
 
-	int& getAge() {return m_age; }
+	int& getAge() { return m_age; }
 	void setAge(int age) { m_age = age; }
+
+	std::string getName() { return m_name; }
 
 	void printInfo()
 	{
