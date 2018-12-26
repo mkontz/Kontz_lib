@@ -408,7 +408,7 @@ int main()
         std::vector<double> valueList;
         hashtable.getAll(keyList, valueList);
 
-        size_t expectLen = 4;
+        size_t expectLen = hashtable.numberEntries();
         if ((keyList.size() == expectLen) && (valueList.size() == expectLen))
         {
             cout << "        Both key and value list have " << expectLen << " as expected - Passed\n";
@@ -432,7 +432,7 @@ int main()
         hashtable.getAll(keyList, valueList);
 
 
-        expectLen = 2;
+        expectLen = hashtable.numberEntries();
         if ((keyList.size() == expectLen) && (valueList.size() == expectLen))
         {
             cout << "        Both key and value list have " << expectLen << " as expected - Passed\n";
@@ -470,10 +470,10 @@ int main()
         begin = clock();
         for (uint32_t a = 0; a <= N; a++)
         {
-            // if ((a % 100) == 0)
-            // {
-            //  cout << "        " << a << "\n";
-            // }
+        //     if ((a % 100) == 0)
+        //     {
+        //      cout << "        " << a << "\n";
+        //     }
             for (uint32_t b = 0; b <= N; b++)
             {
                 for (uint32_t c = 0; c <= N; c++)
@@ -507,7 +507,7 @@ int main()
 
         vector<Combo> hashCombos;
 
-        MEK::Hash<uint32_t, vector<Pair> > hashtable(1000);
+        MEK::Hash<uint32_t, vector<Pair> > hashtable;
 
 
         for (uint32_t a = 0; a <= N; a++)
@@ -648,6 +648,58 @@ int main()
         cout << "    Summary:\n";
         cout << "        Brute force time = " << bruteForceTime << ", hash table time = " << hashTime << endl; 
         cout << "        Brute force size = " << bruteForceCombos.size() << ", hash table size = " << hashCombos.size() << endl << endl;
+
+        ////////////////////////////////////////////////////////////////
+        cout << "Testing Hash class using resize, numberEntries, hashTableSize and removeAll methods.\n";
+        ////////////////////////////////////////////////////////////////
+
+        cout << "    Checking entries before and after resize.\n";
+
+        std::vector<uint32_t> keyListInitial;
+        std::vector<vector<Pair> > valueListInitial;
+        hashtable.getAll(keyListInitial, valueListInitial);
+
+        size_t initSize = hashtable.hashTableSize();
+        size_t initEntries = hashtable.numberEntries();
+        hashtable.resize(hashtable.numberEntries() * 2);
+        size_t afterSize = hashtable.hashTableSize();
+        size_t afterEntries = hashtable.numberEntries();
+
+        std::vector<uint32_t> keyListAfter;
+        std::vector<vector<Pair> > valueListAfter;
+        hashtable.getAll(keyListAfter, valueListAfter);
+
+        cout << "        hash table size: before: " << initSize << ", after: " << afterSize << "\n";
+        if ((valueListInitial.size() == valueListAfter.size()) && (keyListInitial.size() == valueListInitial.size()) && (keyListAfter.size() == valueListAfter.size()) && (initEntries == afterEntries) && (initEntries == valueListInitial.size()))
+        {
+            cout << "        Number of entries match: " << afterEntries << " - Passed\n";
+        }
+        else
+        {
+            passed = false;
+            cout << "        Number of entries changed during resize() - Failed\n";
+            cout << "            Number of inital keys: " << keyListInitial.size() << "\n";
+            cout << "            Number of inital values: " << valueListInitial.size() << "\n";
+            cout << "            Number of inital entries: " << initEntries << "\n";
+            cout << "            Number of final keys: " << keyListAfter.size() << "\n";
+            cout << "            Number of final values: " << valueListAfter.size() << "\n";
+            cout << "            Number of final entries: " << afterEntries << "\n";
+        }
+
+        cout << "    Remove all entries.\n";
+
+        hashtable.removeAll();
+        hashtable.getAll(keyListAfter, valueListAfter);
+
+        if ((keyListAfter.size() == 0) && (valueListAfter.size() == 0))
+        {
+            cout << "        There are no key, value pairs as expected - Passed\n\n";
+        }
+        else
+        {
+            passed = false;
+            cout << "        There are key, value pairs which is not expected - Failed\n\n";
+        }
 
         allTestsPassed = (allTestsPassed && passed);
     }
