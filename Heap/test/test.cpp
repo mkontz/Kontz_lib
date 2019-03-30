@@ -1,9 +1,7 @@
 #include <iostream>
-#include "testSimpleHeap.h"
+#include "testMinMaxHeaps.h"
 
 using namespace std;
-
-
 
 int main()
 {
@@ -30,7 +28,3 @@ int main()
 
     return 0;
 }
-
-
-
-

@@ -26,7 +26,7 @@ namespace MEK
             // Set return value to default
             T retVal = T();
 
-            if (0 < m_heap.size())
+            if (!empty())
             {
                 // take top of heap
                 retVal = m_heap.front();
@@ -40,7 +40,7 @@ namespace MEK
             // Set return value to default
             T retVal = T();
 
-            if (1 <= m_heap.size())
+            if (!empty())
             {
                 // return/remove first/last element
                 retVal = m_heap.front();
@@ -64,10 +64,10 @@ namespace MEK
             return retVal;
         }
 
-        void add(T in)
+        void add(T inVal)
         {
             // add element to back of heap and mark as "dirty"
-            m_heap.push_back(in);
+            m_heap.push_back(inVal);
             m_dirty.push(m_heap.size() - 1);
 
             // bubble dirty elements
@@ -113,7 +113,6 @@ namespace MEK
                     if (moveUp(curr, higher))
                     {
                         swap(curr, higher);
-                        m_dirty.push(higher);
                         continue;
                     }
                 }

@@ -5,13 +5,14 @@
 
 namespace MEK
 {
-    template <typename T> class maxHeap : public MEK::BaseListHeap<T>
+    template <typename T>
+    class MaxHeap : public MEK::BaseListHeap<T>
     {
     public:
-        maxHeap()
+        MaxHeap()
         {}
 
-        ~maxHeap()
+        ~MaxHeap()
         {}
 
     private:

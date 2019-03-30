@@ -5,13 +5,14 @@
 
 namespace MEK
 {
-    template <typename T> class minHeap : public MEK::BaseListHeap<T>
+    template <typename T>
+    class MinHeap : public MEK::BaseListHeap<T>
     {
     public:
-        minHeap()
+        MinHeap()
         {}
 
-        ~minHeap()
+        ~MinHeap()
         {}
 
     private:
