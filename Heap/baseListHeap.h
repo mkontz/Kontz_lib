@@ -14,7 +14,8 @@ namespace MEK
 
     public:
         BaseListHeap() :
-            m_heap()
+            m_heap(),
+            m_dirty()
         {}
 
         ~BaseListHeap()
@@ -79,6 +80,9 @@ namespace MEK
         std::vector<T> getHeap() { return m_heap; }
 
     protected:
+        virtual bool compare(size_t lower, size_t higher) = 0;
+
+    private:
 
         bool moveUp(size_t lower, size_t higher)
         {
@@ -95,8 +99,6 @@ namespace MEK
         }
 
         bool inRange(size_t k) { return ((0 <= k) && (k < m_heap.size())); }
-
-        virtual bool compare(size_t lower, size_t higher) = 0;
 
         void bubble()
         {

@@ -2,11 +2,12 @@
 #define _MAX_HEAP_H__
 
 #include "baseListHeap.h"
+#include "baseKVHeap.h"
 
 namespace MEK
 {
     template <typename T>
-    class MaxHeap : public MEK::BaseListHeap<T>
+    class MaxHeap : public BaseListHeap<T>
     {
     public:
         MaxHeap()
@@ -19,7 +20,25 @@ namespace MEK
 
         bool compare(size_t lower, size_t higher)
         {
-            return (MEK::BaseListHeap<T>::m_heap.at(lower) > MEK::BaseListHeap<T>::m_heap.at(higher));
+            return (this->m_heap.at(lower) > this->m_heap.at(higher));
+        }
+    };
+
+    template <typename K, typename V>
+    class MaxKVHeap : public MEK::BaseKVHeap<K, V>
+    {
+    public:
+        MaxKVHeap()
+        {}
+
+        ~MaxKVHeap()
+        {}
+
+    private:
+
+        bool compare(size_t lower, size_t higher)
+        {
+            return (this->m_heap.at(lower).key > this->m_heap.at(higher).key);
         }
     };
 }
