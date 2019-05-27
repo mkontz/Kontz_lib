@@ -34,7 +34,7 @@ namespace MEK
             if (!this->empty())
             {
                 // peep at entry on top of heap and return key
-                retVal = this->peep().key;
+                retVal = this->front().key;
             }
 
             return retVal;

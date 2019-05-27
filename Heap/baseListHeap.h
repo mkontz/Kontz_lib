@@ -6,7 +6,8 @@
 
 namespace MEK
 {
-    template <typename T> class BaseListHeap
+    template <typename T>
+    class BaseListHeap
     {
     protected:
         std::vector<T> m_heap;
@@ -22,7 +23,7 @@ namespace MEK
         {
         }
 
-        T peep()
+        T front()
         {
             // Set return value to default
             T retVal = T();

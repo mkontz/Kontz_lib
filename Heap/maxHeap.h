@@ -25,7 +25,7 @@ namespace MEK
     };
 
     template <typename K, typename V>
-    class MaxKVHeap : public MEK::BaseKVHeap<K, V>
+    class MaxKVHeap : public BaseKVHeap<K, V>
     {
     public:
         MaxKVHeap()

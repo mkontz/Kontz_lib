@@ -25,7 +25,7 @@ namespace MEK
     };
 
     template <typename K, typename V>
-    class MinKVHeap : public MEK::BaseKVHeap<K, V>
+    class MinKVHeap : public BaseKVHeap<K, V>
     {
     public:
         MinKVHeap()
