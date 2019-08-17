@@ -219,14 +219,14 @@ int main()
 	}
 
 	{
-		std::cout << "Testing Primes class without primes in list.\n";
+		std::cout << "Testing Primes class without primes in list and ''='' operator.\n";
 
 		passed = true;
 
-		Primes<uint16_t> primeTest;
+		Primes<uint32_t> primeTest;
 
-		uint16_t input = 2;
-		uint16_t expected = 3;
+		uint32_t input = 2;
+		uint32_t expected = 3;
 		passed = checkNextPrime(primeTest, input, expected, passed);
 
 		input = 3;
@@ -296,6 +296,38 @@ int main()
 		input = 19;
 		expected = 23;
 		passed = checkNextPrime(primeTest, input, expected, passed);
+
+		Primes<uint32_t> primeCopy;
+		primeCopy = primeTest;
+
+		// ensure that prime number vector was copied correct
+		std::vector<uint32_t> primeVec = primeTest.getPrimes();
+		std::vector<uint32_t> copyVec = primeCopy.getPrimes();
+		if (primeVec.size() != copyVec.size())
+		{
+			std::cout << "    prime vector list copied correctly using ''='' operator - size mismatch - Failed " << std::endl;
+			passed = false;
+		}
+		else
+		{
+			for (size_t k = 0; k < primeVec.size(); k++)
+			{
+				if (primeVec.at(k) != copyVec.at(k))
+				{
+					std::cout << "    " << k << "th primes don't match: primeVec: " << primeVec.at(k) << ", copyVec: " << copyVec.at(k) << std::endl;
+					passed = false;
+				}
+			}
+
+			std::cout << "    prime vector list copied correctly using ''='' operator - Passed " << std::endl;
+		}
+
+		for (int k = 0; k < 100; k++)
+		{
+			input = expected;
+			expected = primeCopy.findNextPrime(input);
+			passed = checkNextPrime(primeTest, input, expected, passed);
+		}
 
 		std::cout << std::endl;
 

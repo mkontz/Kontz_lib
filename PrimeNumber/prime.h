@@ -13,7 +13,8 @@ namespace MEK
 
 	public:
 
-		Primes()
+		Primes() :
+			m_primes()
 		{
 			m_primes.push_back(2);
 			m_primes.push_back(3);
@@ -21,7 +22,8 @@ namespace MEK
 			m_primes.push_back(7);
 		}
 
-		Primes(T max_value)
+		Primes(T max_value) :
+			m_primes()
 		{
 			m_primes.push_back(2);
 			m_primes.push_back(3);
@@ -35,7 +37,12 @@ namespace MEK
 
 		Primes& operator = (const Primes& other)
 		{
-			return m_primes = other.getPrimes();
+			if (&other != this)
+			{
+				this->m_primes = other.getPrimes();
+			}
+
+			return *this;
 		}
 
 		void setPrimes(std::vector<T> primes) { m_primes = primes; }
