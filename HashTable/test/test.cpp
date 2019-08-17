@@ -65,14 +65,14 @@ int main()
 
     {
         cout << "Testing Hash class using set and get methods.\n";
-        MEK::Hash<uint16_t, double> hashtable(20); // Next prime -> 23
+        MEK::Hash<uint16_t, float> hashtable(20); // Next prime -> 23
 
         bool passed = true;
 
         cout << "    Check first entries.\n";
 
         uint16_t key = 345;
-        double value = 5.34;
+        float value = 5.34;
         hashtable.set(key, value);
         if (hashtable.get(key) == value)
         {
@@ -179,18 +179,149 @@ int main()
 
         cout << "\n";
 
-        allTestsPassed = (allTestsPassed && passed);
+        allTestsPassed &= passed;
+
+        cout << "Testing copying hashtable using ''='' operator overload\n";
+        MEK::Hash<uint16_t, float> hashCopy(100);
+        hashCopy = hashtable;
+
+        cout << "    Check size of elements.\n";
+
+        cout << "        Prime number class copied correctly, size of prime number vectors match";
+        if (hashCopy.getPrimes().getPrimes().size() != hashtable.getPrimes().getPrimes().size())
+        {
+            cout << " - Failed\n";
+            passed = false;
+        }
+        else
+        {
+            cout << " - Passed\n";
+        }
+
+        cout << "        Size of hash table copied correctly";
+        if (hashCopy.hashTableSize() != hashtable.hashTableSize())
+        {
+            cout << " - Failed\n";
+            passed = false;
+        }
+        else
+        {
+            cout << " - Passed\n";
+        }
+
+        cout << "        Number of entries match";
+        if (hashCopy.numberEntries() != hashtable.numberEntries())
+        {
+            cout << " - Failed\n";
+            passed = false;
+        }
+        else
+        {
+            cout << " - Passed\n";
+        }
+
+        cout << "        Auto Resize Enable flags match";
+        if (hashCopy.hashTableSize() != hashtable.hashTableSize())
+        {
+            cout << " - Failed\n";
+            passed = false;
+        }
+        else
+        {
+            cout << " - Passed\n";
+        }
+
+        cout << "    Check all keys and values.\n";
+
+        std::vector<uint16_t> orgKeyList;
+        std::vector<float> orgValueList;
+        hashtable.getAll(orgKeyList, orgValueList);
+
+        std::vector<uint16_t> copyKeyList;
+        std::vector<float> copyValueList;
+        hashCopy.getAll(copyKeyList, copyValueList);
+
+        if ((orgKeyList.size() != orgValueList.size()) ||
+            (orgKeyList.size() != copyKeyList.size()) ||
+            (orgValueList.size() != copyValueList.size()))
+        {
+            cout << "        Hash table did not copy correctly because number of keys and values don't match - Failed\n";
+            cout << "            Number of keys (orininal):     " << orgKeyList.size() << "\n";
+            cout << "            Number of values (orininal):   " << orgValueList.size() << "\n";
+            cout << "            Number of keys (copy):         " << copyKeyList.size() << "\n";
+            cout << "            Number of values (copy):       " << copyValueList.size() << "\n";
+
+            passed = false;
+        }
+        else
+        {
+            for (size_t k = 0; k < orgKeyList.size(); k++)
+            {
+                if (orgKeyList.at(k) != copyKeyList.at(k))
+                {
+                    cout << "        Copied key does not match - Failed\n";
+                    passed = false;
+                }
+
+                if (orgValueList.at(k) != copyValueList.at(k))
+                {
+                    cout << "        Copied value does not match - Failed\n";
+                    passed = false;
+                }
+            }
+        }
+
+        if (passed)
+        {
+            cout << "        Hash table copied correct - Passed\n";
+        }
+
+
+        cout << "    Check that hash tables are decoupled.\n";
+
+        key = 45 % 23 ;
+        value = 11.568;
+        hashtable.set(key, value);
+
+        key = 45 ;
+        value = -234.239840;
+        hashtable.set(key, value);
+
+        cout << "        Hash tables are decoupled";
+        if (hashtable[45 % 23] != hashCopy[45 % 23] && hashtable[45] != hashCopy[45])
+        {
+            cout << " - Passed\n";
+        }
+        else
+        {
+            if (hashtable[45 % 23] == hashCopy[45 % 23])
+            {
+                cout << ": hashtable[45 % 23] != hashCopy[45 % 23] - Failed\n";
+            }
+
+            if (hashtable[45] == hashCopy[45])
+            {
+                cout << ": hashtable[45] != hashCopy[45] - Failed\n";
+            }
+
+            passed = false;
+        }
+
+
+        allTestsPassed &= passed;
     }
 
     {
-        cout << "Testing Hash class using [] overload.\n";
-        MEK::Hash<uint16_t, double> hashtable(20); // Next prime -> 23
+        cout << "\nTesting Hash class using [] overload.\n";
+        cout << "    Creating hash table.\n";
+        MEK::Hash<uint32_t, double> hashtable(20); // Next prime -> 23
+        cout << "    Finished creating hash table.\n";
 
-        bool passed = true;
+        passed = true;
 
         cout << "    Check first entries.\n";
 
-        uint16_t key = 345;
+        uint32_t key = 345;
         double value = 5.34;
         hashtable[key] = value;
         if (hashtable[key] == value)
@@ -398,13 +529,140 @@ int main()
 
         cout << "\n";
 
+        cout << "Testing copying constructor\n";
+        MEK::Hash<uint32_t, double> hashCopy(1000);
+        hashCopy = hashtable;
+
+        cout << "    Check size of elements.\n";
+
+        cout << "        Prime number class copied correctly, size of prime number vectors match";
+        if (hashCopy.getPrimes().getPrimes().size() != hashtable.getPrimes().getPrimes().size())
+        {
+            cout << " - Failed\n";
+            passed = false;
+        }
+        else
+        {
+            cout << " - Passed\n";
+        }
+
+        cout << "        Size of hash table copied correctly";
+        if (hashCopy.hashTableSize() != hashtable.hashTableSize())
+        {
+            cout << " - Failed\n";
+            passed = false;
+        }
+        else
+        {
+            cout << " - Passed\n";
+        }
+
+        cout << "        Number of entries match";
+        if (hashCopy.numberEntries() != hashtable.numberEntries())
+        {
+            cout << " - Failed\n";
+            passed = false;
+        }
+        else
+        {
+            cout << " - Passed\n";
+        }
+
+        cout << "        Auto Resize Enable flags match";
+        if (hashCopy.hashTableSize() != hashtable.hashTableSize())
+        {
+            cout << " - Failed\n";
+            passed = false;
+        }
+        else
+        {
+            cout << " - Passed\n";
+        }
+
+        cout << "    Check all keys and values.\n";
+
+        std::vector<uint32_t> orgKeyList;
+        std::vector<double> orgValueList;
+        hashtable.getAll(orgKeyList, orgValueList);
+
+        std::vector<uint32_t> copyKeyList;
+        std::vector<double> copyValueList;
+        hashCopy.getAll(copyKeyList, copyValueList);
+
+        if ((orgKeyList.size() != orgValueList.size()) ||
+            (orgKeyList.size() != copyKeyList.size()) ||
+            (orgValueList.size() != copyValueList.size()))
+        {
+            cout << "        Hash table did not copy correctly because number of keys and values don't match - Failed\n";
+            cout << "            Number of keys (orininal):     " << orgKeyList.size() << "\n";
+            cout << "            Number of values (orininal):   " << orgValueList.size() << "\n";
+            cout << "            Number of keys (copy):         " << copyKeyList.size() << "\n";
+            cout << "            Number of values (copy):       " << copyValueList.size() << "\n";
+
+            passed = false;
+        }
+        else
+        {
+            for (size_t k = 0; k < orgKeyList.size(); k++)
+            {
+                if (orgKeyList.at(k) != copyKeyList.at(k))
+                {
+                    cout << "        Copied key does not match - Failed\n";
+                    passed = false;
+                }
+
+                if (orgValueList.at(k) != copyValueList.at(k))
+                {
+                    cout << "        Copied value does not match - Failed\n";
+                    passed = false;
+                }
+            }
+        }
+
+        if (passed)
+        {
+            cout << "        Hash table copied correct - Passed\n";
+        }
+
+
+        cout << "    Check that hash tables are decoupled.\n";
+
+        key = 45 % 23 ;
+        value = 11.568;
+        hashtable.set(key, value);
+
+        key = 45 ;
+        value = -234.239840;
+        hashtable.set(key, value);
+
+        cout << "        Hash tables are decoupled";
+        if (hashtable[45 % 23] != hashCopy[45 % 23] && hashtable[45] != hashCopy[45])
+        {
+            cout << " - Passed\n";
+        }
+        else
+        {
+            if (hashtable[45 % 23] == hashCopy[45 % 23])
+            {
+                cout << ": hashtable[45 % 23] != hashCopy[45 % 23] - Failed\n";
+            }
+
+            if (hashtable[45] == hashCopy[45])
+            {
+                cout << ": hashtable[45] != hashCopy[45] - Failed\n";
+            }
+
+            passed = false;
+        }
+
+
         ////////////////////////////////////////////////////////////////
-        cout << "Testing Hash class using remove and getAll methods.\n";
+        cout << "\nTesting Hash class using remove and getAll methods.\n";
         ////////////////////////////////////////////////////////////////
 
         cout << "    Checking that getAll methods return 4 entries.\n";
 
-        std::vector<uint16_t> keyList;
+        std::vector<uint32_t> keyList;
         std::vector<double> valueList;
         hashtable.getAll(keyList, valueList);
 

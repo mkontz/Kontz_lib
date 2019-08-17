@@ -3,11 +3,12 @@
 
 #include <vector>
 #include "../PrimeNumber/prime.h"
-
 #include <iostream>
+
 namespace MEK
 {
-    template <typename K, typename V> class Hash
+    template <typename K, typename V>
+    class Hash
     {
     private:
         struct Entry {
@@ -23,6 +24,8 @@ namespace MEK
 
     public:
         Hash() :
+            m_primeNumbers(),
+            m_table(),
             m_numEntries(0),
             m_autoResizeEnabled(true)
         {
@@ -31,6 +34,8 @@ namespace MEK
         }
 
         Hash(size_t min_size) :
+            m_primeNumbers(),
+            m_table(),
             m_numEntries(0),
             m_autoResizeEnabled(true)
         {
@@ -38,9 +43,41 @@ namespace MEK
             m_table.resize(m_primeNumbers.findNextPrime(min_size), NULL);
         }
 
+        Hash(const Hash& other) :
+            m_primeNumbers(),
+            m_table(),
+            m_numEntries(0),
+            m_autoResizeEnabled(true)
+        {
+            *this = other;
+        }
+
         ~Hash()
         {
             removeAll();
+        }
+
+        Hash& operator = (const Hash& other)
+        {
+            if (&other != this)
+            {
+                // set hash table parameters
+                this->m_primeNumbers = other.getPrimes();
+                this->m_numEntries = 0;  // number will be incremented to correct value as entries are added below
+                this->m_autoResizeEnabled = other.getAutoResize();
+                this->m_table.resize(other.hashTableSize());
+
+                // Reconstruct table: there are pointers in Entry to handle collisions so simple copy is not possible
+                std::vector<K> keyList;
+                std::vector<V> valueList;
+                other.getAll(keyList, valueList);
+                for (size_t k = 0; k < keyList.size(); k++)
+                {
+                    this->set(keyList.at(k), valueList.at(k));
+                }
+            }
+
+            return *this;
         }
 
         V& operator [] (const K key)
@@ -165,7 +202,7 @@ namespace MEK
             return found;
         }
 
-        void getAll(std::vector<K>& keyList, std::vector<V>& valueList)
+        void getAll(std::vector<K>& keyList, std::vector<V>& valueList) const
         {
             keyList.resize(0);
             valueList.resize(0);
@@ -220,12 +257,14 @@ namespace MEK
             m_numEntries = 0;
         }
 
-        size_t numberEntries() { return m_numEntries; }
+        size_t numberEntries() const { return m_numEntries; }
 
-        size_t hashTableSize() { return m_table.size(); }
+        size_t hashTableSize() const { return m_table.size(); }
 
         void enableAutoResize(bool isEnabled) { m_autoResizeEnabled = isEnabled; }
-        bool getAutoResize() { return m_autoResizeEnabled; }
+        bool getAutoResize() const { return m_autoResizeEnabled; }
+
+        MEK::Primes<K> getPrimes() const { return m_primeNumbers; }
 
     private:
 
