@@ -1,6 +1,8 @@
 #ifndef ADD_SMART_POINTER_CLASS_HEADER_H__
 #define ADD_SMART_POINTER_CLASS_HEADER_H__
 
+#include <stddef.h>
+
 namespace MEK
 {
 	template<class T> class SmartPointer
