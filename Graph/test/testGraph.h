@@ -27,7 +27,7 @@ bool testGraph()
 		passed = true;
 
 		cout << "   Check constructor." << endl;
-		Graph graph;
+		Graph<uint16_t> graph;
 
 		passed &= check(0, graph.getNodeHash().numberEntries(), "Number of nodes");
 		passed &= check(0, graph.getEdgeHash().numberEntries(), "Number of edges");
@@ -50,21 +50,21 @@ bool testGraph()
 		passed &= check(3, graph.getEdgeHash().numberEntries(), "Number of edges");
 
 		{
-			vector<int> neighbors = graph.getNodeHash().get(1).getAdjEdgeVector();
+			vector<uint16_t> neighbors = graph.getNodeHash().get(1).getAdjEdgeVector();
 			passed &= check(2, neighbors.size(), "Number of neighbors node 1");
 			passed &= check(31, neighbors.at(0), "    1st neighbor");
 			passed &= check(12, neighbors.at(1), "    2nd neighbor");
 		}
 
 		{
-			vector<int> neighbors = graph.getNodeHash().get(2).getAdjEdgeVector();
+			vector<uint16_t> neighbors = graph.getNodeHash().get(2).getAdjEdgeVector();
 			passed &= check(2, neighbors.size(), "Number of neighbors node 2");
 			passed &= check(23, neighbors.at(0), "    1st neighbor");
 			passed &= check(12, neighbors.at(1), "    2nd neighbor");
 		}
 
 		{
-			vector<int> neighbors = graph.getNodeHash().get(3).getAdjEdgeVector();
+			vector<uint16_t> neighbors = graph.getNodeHash().get(3).getAdjEdgeVector();
 			passed &= check(2, neighbors.size(), "Number of neighbors node 3");
 			passed &= check(23, neighbors.at(0), "    1st neighbor");
 			passed &= check(31, neighbors.at(1), "    2nd neighbor");
@@ -72,28 +72,28 @@ bool testGraph()
 
 		{
 			cout << "   Check ''='' overload" << endl;
-			Graph copiedGraph;
+			Graph<uint16_t> copiedGraph;
 			copiedGraph = graph;
 
 			passed &= check(3, graph.getNodeHash().numberEntries(), "Number of nodes");
 			passed &= check(3, graph.getEdgeHash().numberEntries(), "Number of edges");
 
 			{
-				vector<int> neighbors = graph.getNodeHash().get(1).getAdjEdgeVector();
+				vector<uint16_t> neighbors = graph.getNodeHash().get(1).getAdjEdgeVector();
 				passed &= check(2, neighbors.size(), "Number of neighbors node 1");
 				passed &= check(31, neighbors.at(0), "    1st neighbor");
 				passed &= check(12, neighbors.at(1), "    2nd neighbor");
 			}
 
 			{
-				vector<int> neighbors = graph.getNodeHash().get(2).getAdjEdgeVector();
+				vector<uint16_t> neighbors = graph.getNodeHash().get(2).getAdjEdgeVector();
 				passed &= check(2, neighbors.size(), "Number of neighbors node 2");
 				passed &= check(23, neighbors.at(0), "    1st neighbor");
 				passed &= check(12, neighbors.at(1), "    2nd neighbor");
 			}
 
 			{
-				vector<int> neighbors = graph.getNodeHash().get(3).getAdjEdgeVector();
+				vector<uint16_t> neighbors = graph.getNodeHash().get(3).getAdjEdgeVector();
 				passed &= check(2, neighbors.size(), "Number of neighbors node 3");
 				passed &= check(23, neighbors.at(0), "    1st neighbor");
 				passed &= check(31, neighbors.at(1), "    2nd neighbor");
@@ -106,20 +106,20 @@ bool testGraph()
 		passed &= check(2, graph.getEdgeHash().numberEntries(), "Number of edges");
 
 		{
-			vector<int> neighbors = graph.getNodeHash().get(1).getAdjEdgeVector();
+			vector<uint16_t> neighbors = graph.getNodeHash().get(1).getAdjEdgeVector();
 			passed &= check(1, neighbors.size(), "Number of neighbors node 1");
 			passed &= check(12, neighbors.at(0), "    1st neighbor");
 		}
 
 		{
-			vector<int> neighbors = graph.getNodeHash().get(2).getAdjEdgeVector();
+			vector<uint16_t> neighbors = graph.getNodeHash().get(2).getAdjEdgeVector();
 			passed &= check(2, neighbors.size(), "Number of neighbors node 2");
 			passed &= check(23, neighbors.at(0), "    1st neighbor");
 			passed &= check(12, neighbors.at(1), "    2nd neighbor");
 		}
 
 		{
-			vector<int> neighbors = graph.getNodeHash().get(3).getAdjEdgeVector();
+			vector<uint16_t> neighbors = graph.getNodeHash().get(3).getAdjEdgeVector();
 			passed &= check(1, neighbors.size(), "Number of neighbors node 3");
 			passed &= check(23, neighbors.at(0), "    1st neighbor");
 		}
@@ -130,13 +130,13 @@ bool testGraph()
 		passed &= check(1, graph.getEdgeHash().numberEntries(), "Number of edges");
 
 		{
-			vector<int> neighbors = graph.getNodeHash().get(1).getAdjEdgeVector();
+			vector<uint16_t> neighbors = graph.getNodeHash().get(1).getAdjEdgeVector();
 			passed &= check(1, neighbors.size(), "Number of neighbors node 1");
 			passed &= check(12, neighbors.at(0), "    1st neighbor");
 		}
 
 		{
-			vector<int> neighbors = graph.getNodeHash().get(2).getAdjEdgeVector();
+			vector<uint16_t> neighbors = graph.getNodeHash().get(2).getAdjEdgeVector();
 			passed &= check(1, neighbors.size(), "Number of neighbors node 2");
 			passed &= check(12, neighbors.at(0), "    1st neighbor");
 		}

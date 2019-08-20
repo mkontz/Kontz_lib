@@ -24,7 +24,7 @@ bool testNode()
 	{
 		cout << "Testing Node class." << endl;
 		passed = true;
-		Node node1(11);
+		Node<uint16_t> node1(11);
 
 		cout << "   Check constructor and getIdx()." << endl;
 
@@ -38,22 +38,22 @@ bool testNode()
 		node1.addEdge(4);
 		node1.addEdge(5);
 
-		vector<int> vec = node1.getAdjEdgeVector();
+		vector<uint16_t> vec = node1.getAdjEdgeVector();
 		//std::sort(vec.begin(), vec.end());
 		passed &= check(3, vec.size(), "Number of neighbors = 3");
-		for (int k = 0; k < 3; k++)
+		for (uint16_t k = 0; k < 3; k++)
 		{
 			passed &= check(k + 3, vec.at(k), "Checking neighbors IDs");
 		}
 
 		cout << "   Check ''='' overload." << endl;
 
-		Node copiedNode = node1;
+		Node<uint16_t> copiedNode = node1;
 		passed &= check(11, copiedNode.getIdx(), "Coppied Node ID = 1");
 		vec = copiedNode.getAdjEdgeVector();
 		//std::sort(vec.begin(), vec.end());
 		passed &= check(3, vec.size(), "Number of neighbors = 3");
-		for (int k = 0; k < 3; k++)
+		for (uint16_t k = 0; k < 3; k++)
 		{
 			passed &= check(k + 3, vec.at(k), "Checking neighbors IDs");
 		}
@@ -62,7 +62,7 @@ bool testNode()
 		node1.removeEdge(3);
 		node1.removeEdge(5);
 
-		Hash<int, int> edgeHash = node1.getAdjEdgeHash();
+		Hash<uint16_t, uint16_t> edgeHash = node1.getAdjEdgeHash();
 		passed &= check(1, edgeHash.numberEntries(), "Number of neighbors = 1");
 		passed &= check(4, edgeHash[4], "The neighbors is 4");
 		

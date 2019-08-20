@@ -46,11 +46,11 @@ bool testEdge()
 
 		cout << "   Check constructor, get and set IDs." << endl;
 
-		Edge edge12(1);
+		Edge<int> edge12(1);
 
 		passed &= check(1, edge12.getIdx(), "Edge12 IDs = 1");
-		passed &= check(-1, edge12.getNode1(), "Node #1 = -1, edge12");
-		passed &= check(-1, edge12.getNode2(), "Node #2 = -1, edge12");
+		passed &= check(0, edge12.getNode1(), "Node #1 = 0, edge12");
+		passed &= check(0, edge12.getNode2(), "Node #2 = 0, edge12");
 
 
 		edge12.setNodes(node1, node2);
@@ -58,7 +58,7 @@ bool testEdge()
 		passed &= check(node1, edge12.getNode1(), "Node #1, edge12");
 		passed &= check(node2, edge12.getNode2(), "Node #2, edge12");
 
-		Edge edge23(2,5,6);
+		Edge<uint16_t> edge23(2,5,6);
 
 		passed &= check(2, edge23.getIdx(), "Edge23 IDs = 2");
 		passed &= check(5, edge23.getNode1(), "Node #1 = 5, edge23");
@@ -72,7 +72,7 @@ bool testEdge()
 		
 		cout << "   Check ''='' overload." << endl;
 
-		Edge copy = edge23;
+		Edge<uint16_t> copy = edge23;
 
 		passed &= check(2, copy.getIdx(), "Copied Edge23 IDs = 2");
 		passed &= check(node2, copy.getNode1(), "Node #1 copied edge23");

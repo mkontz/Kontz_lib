@@ -3,15 +3,16 @@
 
 namespace MEK
 {
+    template<typename T>
 	class Edge
 	{
 	private:
-		int m_idx;
-		int m_node1;
-		int m_node2;
+		T m_idx;
+		T m_node1;
+		T m_node2;
 
 	public:
-		Edge(int idx = -1, int n1 = -1, int n2 = -1) :
+		Edge(T idx = 0, T n1 = 0, T n2 = 0) :
 		 	m_idx(idx),
 		 	m_node1(n1),
 		 	m_node2(n2)
@@ -32,15 +33,15 @@ namespace MEK
             return *this;
         }
 
-        int getIdx() const { return m_idx; }
+        T getIdx() const { return m_idx; }
 
-        int getNode1() const { return m_node1; }
-        void setNode1(int node) { m_node1 = node; }
+        T getNode1() const { return m_node1; }
+        void setNode1(T node) { m_node1 = node; }
 
-        int getNode2() const { return m_node2; }
-        void setNode2(int node) { m_node2 = node; }
+        T getNode2() const { return m_node2; }
+        void setNode2(T node) { m_node2 = node; }
 
-        void setNodes(int node1, int node2)
+        void setNodes(T node1, T node2)
         {
         	m_node1 = node1;
         	m_node2 = node2;

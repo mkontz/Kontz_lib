@@ -5,7 +5,6 @@
 #include "edge.h"
 #include "../HashTable/hash.h"
 #include <vector>
-#include <iostream>
 
 //*********************************************************************
 //  Graph Class
@@ -13,11 +12,12 @@
 
 namespace MEK
 {
+	template<typename T, class N = Node<T>, class E = Edge<T> >
 	class Graph
 	{
 	private:
-		Hash<int, Node> m_nodeHash;
-		Hash<int, Edge> m_edgeHash;
+		Hash<T, N> m_nodeHash;
+		Hash<T, E> m_edgeHash;
 
 	public:
 		Graph() :
@@ -39,19 +39,19 @@ namespace MEK
             return *this;
         }
 
-		void addNode(int idx)
+		virtual void addNode(T idx)
 		{
-			Node tmp(idx);
+			N tmp(idx);
 			m_nodeHash.set(idx, tmp);
 		}
 
-		bool deleteNode(int idx)
+		virtual bool deleteNode(T idx)
 		{
 			bool found = false;
 
 			if (m_nodeHash.exist(idx))
 			{
-				std::vector<int> edgeList = m_nodeHash[idx].getAdjEdgeVector();
+				std::vector<T> edgeList = m_nodeHash[idx].getAdjEdgeVector();
 
 				for (size_t k = 0; k < edgeList.size(); k++)
 				{
@@ -66,7 +66,7 @@ namespace MEK
 			return found;
 		}
 
-		bool addEdge(int idx, int n1, int n2)
+		virtual bool addEdge(T idx, T n1, T n2)
 		{
 			bool retVal = false;
 
@@ -77,7 +77,7 @@ namespace MEK
 
 			if (m_nodeHash.exist(n1) && m_nodeHash.exist(n2))
 			{
-				m_edgeHash[idx] = Edge(idx, n1, n2);
+				m_edgeHash[idx] = E(idx, n1, n2);
 
 				(m_nodeHash[n1]).addEdge(idx);
 				(m_nodeHash[n2]).addEdge(idx);
@@ -88,7 +88,7 @@ namespace MEK
 			return retVal;
 		}
 
-		bool deleteEdge(int idx)
+		virtual bool deleteEdge(T idx)
 		{
 			bool retVal = true;
 
@@ -114,8 +114,8 @@ namespace MEK
 			return retVal;
 		}
 
-		Hash<int, Node>& getNodeHash() { return m_nodeHash; }
-		Hash<int, Edge>& getEdgeHash() { return m_edgeHash; }
+		Hash<T, N>& getNodeHash() { return m_nodeHash; }
+		Hash<T, E>& getEdgeHash() { return m_edgeHash; }
 	};
 }
 #endif

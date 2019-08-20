@@ -2,17 +2,18 @@
 #define _NODE_CLASS_HEADER_H__
 
 #include "../HashTable/hash.h"
-#include <iostream>
+
 namespace MEK
 {
+	template<typename T>
 	class Node
 	{
 	private:
-		int m_idx;
-		Hash<int, int> m_adjacentEdges;
+		T m_idx;
+		Hash<T, T> m_adjacentEdges;
 
 	public:
-		Node(int idx = -1) :
+		Node(T idx = 0) :
 		 	m_idx(idx),
 		 	m_adjacentEdges(20)
 		{}
@@ -31,23 +32,23 @@ namespace MEK
             return *this;
         }
 
-        int getIdx() const { return m_idx; }
-        Hash<int, int> getAdjEdgeHash() const { return m_adjacentEdges; }
-        std::vector<int> getAdjEdgeVector()
+        T getIdx() const { return m_idx; }
+        Hash<T, T> getAdjEdgeHash() const { return m_adjacentEdges; }
+        std::vector<T> getAdjEdgeVector()
         {
-        	std::vector<int> keys;
-        	std::vector<int> values;
+        	std::vector<T> keys;
+        	std::vector<T> values;
         	m_adjacentEdges.getAll(keys, values);
 
         	return keys;
         }
 
-		void addEdge(int idx)
+		void addEdge(T idx)
 		{
 			m_adjacentEdges.set(idx, idx);
 		}
 
-		bool removeEdge(int idx)
+		bool removeEdge(T idx)
 		{
 			return m_adjacentEdges.remove(idx);
 		}

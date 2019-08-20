@@ -1,5 +1,5 @@
-#include "testNode.h"
 #include "testEdge.h"
+#include "testNode.h"
 #include "testGraph.h"
 
 #include <iostream>
@@ -16,7 +16,6 @@ int main()
 	allTestsPassed &= testNode();
 
 	allTestsPassed &= testGraph();
-
 
     ////////////////////////////////////////////////////////////////
     // Summary of all tests.
