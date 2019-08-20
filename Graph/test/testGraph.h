@@ -75,29 +75,37 @@ bool testGraph()
 			Graph<uint16_t> copiedGraph;
 			copiedGraph = graph;
 
-			passed &= check(3, graph.getNodeHash().numberEntries(), "Number of nodes");
-			passed &= check(3, graph.getEdgeHash().numberEntries(), "Number of edges");
+			passed &= check(3, copiedGraph.getNodeHash().numberEntries(), "Number of nodes");
+			passed &= check(3, copiedGraph.getEdgeHash().numberEntries(), "Number of edges");
 
 			{
-				vector<uint16_t> neighbors = graph.getNodeHash().get(1).getAdjEdgeVector();
+				vector<uint16_t> neighbors = copiedGraph.getNodeHash().get(1).getAdjEdgeVector();
 				passed &= check(2, neighbors.size(), "Number of neighbors node 1");
 				passed &= check(31, neighbors.at(0), "    1st neighbor");
 				passed &= check(12, neighbors.at(1), "    2nd neighbor");
 			}
 
 			{
-				vector<uint16_t> neighbors = graph.getNodeHash().get(2).getAdjEdgeVector();
+				vector<uint16_t> neighbors = copiedGraph.getNodeHash().get(2).getAdjEdgeVector();
 				passed &= check(2, neighbors.size(), "Number of neighbors node 2");
 				passed &= check(23, neighbors.at(0), "    1st neighbor");
 				passed &= check(12, neighbors.at(1), "    2nd neighbor");
 			}
 
 			{
-				vector<uint16_t> neighbors = graph.getNodeHash().get(3).getAdjEdgeVector();
+				vector<uint16_t> neighbors = copiedGraph.getNodeHash().get(3).getAdjEdgeVector();
 				passed &= check(2, neighbors.size(), "Number of neighbors node 3");
 				passed &= check(23, neighbors.at(0), "    1st neighbor");
 				passed &= check(31, neighbors.at(1), "    2nd neighbor");
 			}
+
+			cout << "   Check removeAll()" << endl;
+
+			copiedGraph.removeAll();
+
+			passed &= check(0, copiedGraph.getNodeHash().numberEntries(), "Number of nodes");
+			passed &= check(0, copiedGraph.getEdgeHash().numberEntries(), "Number of edges");
+
 		}
 
 		cout << "   Check deleteEdge() - deleting edge 23." << endl;

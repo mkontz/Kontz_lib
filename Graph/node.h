@@ -25,8 +25,8 @@ namespace MEK
         {
         	if (this != &other)
         	{
-				m_idx = getIdx();
-				m_adjacentEdges = getAdjEdgeHash();		
+				m_idx = other.getIdx();
+				m_adjacentEdges = other.getAdjEdgeHash();
         	}
 
             return *this;
