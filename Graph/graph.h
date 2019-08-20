@@ -12,110 +12,116 @@
 
 namespace MEK
 {
-	template<typename T, class N = Node<T>, class E = Edge<T> >
-	class Graph
-	{
-	private:
-		Hash<T, N> m_nodeHash;
-		Hash<T, E> m_edgeHash;
+    template<typename T, class N = Node<T>, class E = Edge<T> >
+    class Graph
+    {
+    private:
+        Hash<T, N> m_nodeHash;
+        Hash<T, E> m_edgeHash;
 
-	public:
-		Graph() :
-		 	m_nodeHash(),
-		 	m_edgeHash()
-		{ }
+    public:
+        Graph() :
+            m_nodeHash(),
+            m_edgeHash()
+        { }
 
-		~Graph()
-		{ }
+        ~Graph()
+        { }
 
-        Graph& operator = (const Graph& other)
+        Graph& operator = (Graph& other)
         {
-        	if (this != &other)
-        	{
-        		m_nodeHash = getNodeHash();
-        		m_edgeHash = getEdgeHash();
-        	}
+            if (this != &other)
+            {
+                m_nodeHash = other.getNodeHash();
+                m_edgeHash = other.getEdgeHash();
+            }
 
             return *this;
         }
 
-		virtual void addNode(T idx)
-		{
-			N tmp(idx);
-			m_nodeHash.set(idx, tmp);
-		}
+        virtual void addNode(T idx)
+        {
+            N tmp(idx);
+            m_nodeHash.set(idx, tmp);
+        }
 
-		virtual bool deleteNode(T idx)
-		{
-			bool found = false;
+        virtual bool deleteNode(T idx)
+        {
+            bool found = false;
 
-			if (m_nodeHash.exist(idx))
-			{
-				std::vector<T> edgeList = m_nodeHash[idx].getAdjEdgeVector();
+            if (m_nodeHash.exist(idx))
+            {
+                std::vector<T> edgeList = m_nodeHash[idx].getAdjEdgeVector();
 
-				for (size_t k = 0; k < edgeList.size(); k++)
-				{
-					deleteEdge(edgeList.at(k));
-				}
+                for (size_t k = 0; k < edgeList.size(); k++)
+                {
+                    deleteEdge(edgeList.at(k));
+                }
 
-				m_nodeHash.remove(idx);
+                m_nodeHash.remove(idx);
 
-				found = true;
-			}
+                found = true;
+            }
 
-			return found;
-		}
+            return found;
+        }
 
-		virtual bool addEdge(T idx, T n1, T n2)
-		{
-			bool retVal = false;
+        virtual bool addEdge(T idx, T n1, T n2)
+        {
+            bool retVal = false;
 
-			if (m_edgeHash.exist(idx))
-			{
-				deleteEdge(idx);
-			}
+            if (m_edgeHash.exist(idx))
+            {
+                deleteEdge(idx);
+            }
 
-			if (m_nodeHash.exist(n1) && m_nodeHash.exist(n2))
-			{
-				m_edgeHash[idx] = E(idx, n1, n2);
+            if (m_nodeHash.exist(n1) && m_nodeHash.exist(n2))
+            {
+                m_edgeHash[idx] = E(idx, n1, n2);
 
-				(m_nodeHash[n1]).addEdge(idx);
-				(m_nodeHash[n2]).addEdge(idx);
+                (m_nodeHash[n1]).addEdge(idx);
+                (m_nodeHash[n2]).addEdge(idx);
 
-				retVal= true;
-			}
+                retVal= true;
+            }
 
-			return retVal;
-		}
+            return retVal;
+        }
 
-		virtual bool deleteEdge(T idx)
-		{
-			bool retVal = true;
+        virtual bool deleteEdge(T idx)
+        {
+            bool retVal = true;
 
-			if (m_edgeHash.exist(idx))
-			{
-				if (m_nodeHash.exist(m_edgeHash[idx].getNode1()))
-				{
-					m_nodeHash[m_edgeHash[idx].getNode1()].removeEdge(idx);
-				}
+            if (m_edgeHash.exist(idx))
+            {
+                if (m_nodeHash.exist(m_edgeHash[idx].getNode1()))
+                {
+                    m_nodeHash[m_edgeHash[idx].getNode1()].removeEdge(idx);
+                }
 
-				if (m_nodeHash.exist(m_edgeHash[idx].getNode2()))
-				{
-					m_nodeHash[m_edgeHash[idx].getNode2()].removeEdge(idx);
-				}	
+                if (m_nodeHash.exist(m_edgeHash[idx].getNode2()))
+                {
+                    m_nodeHash[m_edgeHash[idx].getNode2()].removeEdge(idx);
+                }   
 
-				m_edgeHash.remove(idx);
-			}
-			else
-			{
-				retVal = false;
-			}
+                m_edgeHash.remove(idx);
+            }
+            else
+            {
+                retVal = false;
+            }
 
-			return retVal;
-		}
+            return retVal;
+        }
 
-		Hash<T, N>& getNodeHash() { return m_nodeHash; }
-		Hash<T, E>& getEdgeHash() { return m_edgeHash; }
-	};
+        virtual void removeAll()
+        {
+            m_nodeHash.removeAll();
+            m_edgeHash.removeAll();
+        }
+
+        Hash<T, N>& getNodeHash() { return m_nodeHash; }
+        Hash<T, E>& getEdgeHash() { return m_edgeHash; }
+    };
 }
 #endif
