@@ -15,7 +15,7 @@ namespace MEK
     template<typename T, class N = Node<T>, class E = Edge<T> >
     class Graph
     {
-    private:
+    protected:
         Hash<T, N> m_nodeHash;
         Hash<T, E> m_edgeHash;
 
@@ -58,7 +58,7 @@ namespace MEK
                     deleteEdge(edgeList.at(k));
                 }
 
-                m_nodeHash.remove(idx);
+                Graph<T>::m_nodeHash.remove(idx);
 
                 found = true;
             }
